@@ -43,6 +43,11 @@ local function printCellInfo(tab, name, startPos)
 	mon.setCursorPos(sizeX-10, startPos+3)
 	mon.write(tab[3])
 	
+	mon.setCursorPos(1, startPos+3)
+	mon.write("Zmiany energii:")
+	mon.setCursorPos(sizeX-10, startPos+4)
+	mon.write(tab[4])
+	
 	mon.setCursorPos(1, startPos+4)
 end
 
@@ -63,5 +68,5 @@ while true do
 	elseif id == 36 then msg = "BATERIA PRZETWORSTWA"
 	else message = "BATERIA"
 	end
-	printCellInfo(cells[cellID], msg, (cellID-1)*5+1)
+	printCellInfo(cells[cellID], msg, (cellID-1)*6+1)
 end

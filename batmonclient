@@ -6,11 +6,24 @@ local id = os.getComputerID()
 
 rednet.open(modemSide)
 local bat = peripheral.wrap(batSide)
-local cell = {}
+local lastEnergyStatus = 0
 while true do
-	cell[1] = tostring(math.floor(bat.getEnergyStored()))
-	cell[2] = tostring(math.floor(bat.getMaxEnergyStored()))
-	cell[3] = tostring(math.floor((bat.getEnergyStored()/bat.getMaxEnergyStored())*100)) .. "%"
+	local cell = {}
+	local energyStored = bat.getEnergyStored()
+	local maxEnergyStored = bat.getMaxEnergyStored()
+	local energyInPercent = (energyStored/maxEnergyStored)*100
+	local energyDifference = energyStored - lastEnergyStatus
+	lastEnergyStatus = energyStored
+	
+	if energyDifference >= 0 then
+		cell[4] = tostring(math.floor(energyDifference/100)) .. " MJ/t zysku"
+	else
+		cell[4] = tostring(math.floor(energyDifference/100)) .. " MJ/t straty"
+	end
+	cell[1] = tostring(math.floor(energyStored))
+	cell[2] = tostring(math.floor(maxEnergyStored))
+	cell[3] = tostring(math.floor(energyInPercent)) .. "%"
+	
 	cell["id"] = tostring(id)
 	
 	rednet.send(receiverID, textutils.serialize(cell))
