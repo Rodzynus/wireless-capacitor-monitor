@@ -12,13 +12,13 @@ while true do
 	local energyStored = bat.getEnergyStored()
 	local maxEnergyStored = bat.getMaxEnergyStored()
 	local energyInPercent = (energyStored/maxEnergyStored)*100
-	local energyDifference = math.abs(energyStored - lastEnergyStatus)
+	local energyDifference = energyStored - lastEnergyStatus
 	lastEnergyStatus = energyStored
 	
 	if energyDifference >= 0 then
-		cell[4] = tostring(math.floor(energyDifference/100)) .. " MJ/t zysku"
+		cell[4] = tostring(math.abs(math.floor(energyDifference/100))) .. " MJ/t zysku"
 	else
-		cell[4] = tostring(math.floor(energyDifference/100)) .. " MJ/t straty"
+		cell[4] = tostring(math.abs(math.floor(energyDifference/100))) .. " MJ/t straty"
 	end
 	cell[1] = tostring(math.floor(energyStored))
 	cell[2] = tostring(math.floor(maxEnergyStored))
