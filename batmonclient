@@ -1,0 +1,18 @@
+local tArgs = { ... }
+local receiverID = tonumber(tArgs[1])
+local modemSide = tArgs[2]
+local batSide = tArgs[3]
+local id = os.getComputerID()
+
+rednet.open(modemSide)
+local bat = peripheral.wrap(batSide)
+local cell = {}
+while true do
+	cell[1] = tostring(math.floor(bat.getEnergyStored()))
+	cell[2] = tostring(math.floor(bat.getMaxEnergyStored()))
+	cell[3] = tostring(math.floor((bat.getEnergyStored()/bat.getMaxEnergyStored())*100)) .. "%"
+	cell["id"] = tostring(id)
+	
+	rednet.send(receiverID, textutils.serialize(cell))
+	sleep(5)
+end
