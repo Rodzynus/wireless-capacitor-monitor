@@ -30,22 +30,22 @@ local function printCellInfo(tab, name, startPos)
 	
 	mon.setCursorPos(1, startPos+1)
 	mon.write("Przechowuje:")
-	mon.setCursorPos(sizeX-10, startPos+1)
+	mon.setCursorPos(sizeX/2, startPos+1)
 	mon.write(tab[1])
 	
 	mon.setCursorPos(1, startPos+2)
 	mon.write("Pojemnosc:")
-	mon.setCursorPos(sizeX-10, startPos+2)
+	mon.setCursorPos(sizeX/2, startPos+2)
 	mon.write(tab[2])
 	
 	mon.setCursorPos(1, startPos+3)
 	mon.write("Wypelnienie:")
-	mon.setCursorPos(sizeX-10, startPos+3)
+	mon.setCursorPos(sizeX/2, startPos+3)
 	mon.write(tab[3])
 	
 	mon.setCursorPos(1, startPos+4)
 	mon.write("Zmiany energii:")
-	mon.setCursorPos(sizeX-10, startPos+4)
+	mon.setCursorPos(sizeX/2, startPos+4)
 	mon.write(tab[4])
 	
 	mon.setCursorPos(1, startPos+4)
