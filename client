@@ -72,6 +72,7 @@ local function format_num(amount, decimal, prefix, neg_prefix)
 
   return formatted
 end
+------------------------------------------------------------
 
 local function main()
 	local receiverID = assert(tonumber(tArgs[1]), assertMsg)
