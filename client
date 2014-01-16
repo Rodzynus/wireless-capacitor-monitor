@@ -94,8 +94,8 @@ local function main()
 		local energyInPercent = (energyStored/maxEnergyStored)*100
 		local energyDifference = energyStored - lastEnergyStatus
 		
-		cell[1] = tostring(format_num(math.floor(energyStored)), 0) .. " MJ"
-		cell[2] = tostring(format_num(math.floor(maxEnergyStored)), 0) .. " MJ"
+		cell[1] = tostring(format_num(math.floor(energyStored), 0) .. " MJ"
+		cell[2] = tostring(format_num(math.floor(maxEnergyStored), 0) .. " MJ"
 		cell[3] = tostring(math.floor(energyInPercent)) .. "%"
 		if energyDifference >= 0 then
 			cell[4] = tostring(math.abs(math.floor(energyDifference/100))) .. " MJ/t zysku"
