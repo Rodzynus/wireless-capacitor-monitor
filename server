@@ -37,7 +37,7 @@ local function printCellInfo(tab, startPos)
 	
 	for k, v in ipairs(tab) do
 		mon.setCursorPos(1, startPos+k)
-		mon.write("Przechowuje:")
+		mon.write(messages[k])
 		mon.setCursorPos(sizeX/2, startPos+k)
 		mon.write(tab[k])
 	end
