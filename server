@@ -30,6 +30,25 @@ local function findCell(id)
 	return nil
 end
 
+local function separator(Y)
+	mon.setCursorPos(1, Y)
+	for i = 1, sizeX do
+		mon.write("=")
+	end
+	mon.setCursorPos(1, Y+1)
+end
+
+local function indicator(tab, Y)
+	mon.setCursorPos(sizeX-1, Y)
+	if mon.isColor() and tonumber(string.match(tab[3], "%d+")) < 30 then
+		mon.setBackgroundColor(colors.red)
+	else
+		mon.setBackgroundColor(colors.white)
+	end
+	mon.write("  ")
+	mon.setBackgroundColor(colors.black)
+end
+
 local function printCellInfo(tab, startPos)
 	clearLines(startPos, startPos+#tab)
 	mon.setCursorPos(math.floor((sizeX-#tab["name"])/2) ,startPos)
@@ -42,7 +61,16 @@ local function printCellInfo(tab, startPos)
 		mon.write(tab[k])
 	end
 	
-	mon.setCursorPos(1, startPos+#tab+1)
+	for i = 1, 4 do
+		if tonumber(string.match(tab[3], "%d+")) >= 99 then
+			indicator(tab, startPos)
+		end
+		if tonumber(string.match(tab[3], "%d+")) > 100 - (20 * i) then
+			indicator(tab, startPos+i)
+		end
+	end
+	
+	separator(startPos+#tab+1)
 end
 
 mon.clear()
