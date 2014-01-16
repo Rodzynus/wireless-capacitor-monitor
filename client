@@ -7,8 +7,9 @@ local function main()
 	local receiverID = assert(tonumber(tArgs[1]), assertMsg)
 	local modemSide = assert(tArgs[2], assertMsg)
 	local batSide = assert(tArgs[3], assertMsg)
-	local batName = assert(tArgs[4], assertMsg)
+	--local batName = assert(tArgs[4], assertMsg)
 	local id = os.getComputerID()
+	local batName = os.getComputerLabel()
 	
 	rednet.open(modemSide)
 	local bat = peripheral.wrap(batSide)
@@ -41,7 +42,7 @@ local function main()
 end
 
 local function printUsage()
-	print("Usage: client <receiver ID> <modem side> <battery side> <battery name>")
+	print("Usage: client <receiver ID> <modem side> <battery side>")
 end
 
 if tArgs[1] == nil then
