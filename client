@@ -1,0 +1,51 @@
+local tArgs = { ... }
+
+local readDelay = 5
+local assertMsg = "Wrong argument, type name of the program without any arguments to see usage."
+
+local function main()
+	local receiverID = assert(tonumber(tArgs[1]), assertMsg)
+	local modemSide = assert(tArgs[2], assertMsg)
+	local batSide = assert(tArgs[3], assertMsg)
+	local batName = assert(tArgs[4], assertMsg)
+	local id = os.getComputerID()
+	
+	rednet.open(modemSide)
+	local bat = peripheral.wrap(batSide)
+	energyStored = bat.getEnergyStored()
+	
+	timer1 = os.startTimer(readDelay)
+	while true do
+		os.pullEvent("timer")
+		local cell = {}
+		local lastEnergyStatus = energyStored
+		local energyStored = bat.getEnergyStored()
+		local maxEnergyStored = bat.getMaxEnergyStored()
+		local energyInPercent = (energyStored/maxEnergyStored)*100
+		local energyDifference = energyStored - lastEnergyStatus
+		
+		cell[1] = tostring(math.floor(energyStored))
+		cell[2] = tostring(math.floor(maxEnergyStored))
+		cell[3] = tostring(math.floor(energyInPercent)) .. "%"
+		if energyDifference >= 0 then
+			cell[4] = tostring(math.abs(math.floor(energyDifference/100))) .. " MJ/t zysku"
+		else
+			cell[4] = tostring(math.abs(math.floor(energyDifference/100))) .. " MJ/t straty"
+		end
+		cell["name"] = batName
+		cell["id"] = tostring(id)
+		
+		rednet.send(receiverID, textutils.serialize(cell))
+		timer1 = os.startTimer(readDelay)
+	end
+end
+
+local function printUsage()
+	print("Usage: client <receiver ID> <modem side> <battery side> <battery name>")
+end
+
+if tArgs[1] == nil then
+	printUsage()
+else
+	main()
+end

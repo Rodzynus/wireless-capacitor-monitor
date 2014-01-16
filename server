@@ -1,0 +1,60 @@
+tArgs = { ... }
+local modemSide = tArgs[1]
+local monSide = tArgs[2]
+rednet.open(modemSide)
+local mon = peripheral.wrap(monSide)
+local sizeX, sizeY = mon.getSize()
+local cells = {}
+
+local messages = {
+	[1] = "Przechowuje:";
+	[2] = "Pojemnosc:";
+	[3] = "Zapelniono:";
+	[4] = "Zuzycie:";
+}
+	
+local function clearLines(cStart, cEnd)
+	for i = cStart, cEnd do
+		mon.setCursorPos(1, i)
+		mon.clearLine()
+	end
+	mon.setCursorPos(1, cStart)
+end
+
+local function findCell(id)
+	for k, v in pairs(cells) do
+		if v["id"] == tostring(id) then
+			return k
+		end
+	end
+	return nil
+end
+
+local function printCellInfo(tab, startPos)
+	clearLines(startPos, startPos+#tab)
+	mon.setCursorPos(math.floor((sizeX-#tab["name"])/2) ,startPos)
+	mon.write(tab["name"])
+	
+	for k, v in ipairs(tab) do
+		mon.setCursorPos(1, startPos+k)
+		mon.write("Przechowuje:")
+		mon.setCursorPos(sizeX/2, startPos+k)
+		mon.write(tab[k])
+	end
+	
+	mon.setCursorPos(1, startPos+#tab+1)
+end
+
+mon.clear()
+while true do
+	local _, id, message = os.pullEvent("rednet_message")
+	local cellID = findCell(id)
+	local msg
+	if cellID then
+		cells[cellID] = textutils.unserialize(message)
+	else
+		cells[#cells+1] = textutils.unserialize(message)
+		cellID = #cells
+	end
+	printCellInfo(cells[cellID], (cellID-1)*6+1)
+end
