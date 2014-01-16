@@ -20,7 +20,7 @@ local function main()
 		os.pullEvent("timer")
 		local cell = {}
 		local lastEnergyStatus = energyStored
-		local energyStored = bat.getEnergyStored()
+		energyStored = bat.getEnergyStored()
 		local maxEnergyStored = bat.getMaxEnergyStored()
 		local energyInPercent = (energyStored/maxEnergyStored)*100
 		local energyDifference = energyStored - lastEnergyStatus
