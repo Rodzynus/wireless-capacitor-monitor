@@ -3,12 +3,9 @@ local tArgs = { ... }
 local readDelay = 5
 local assertMsg = "Wrong argument, type name of the program without any arguments to see usage."
 
----============================================================
--- add comma to separate thousands
--- 
 local function comma_value(amount)
   local formatted = amount
-  while true do  
+  while true do
     formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1.%2')
     if (k==0) then
       break
@@ -23,11 +20,11 @@ local function main()
 	local batSide = assert(tArgs[3], assertMsg)
 	local id = os.getComputerID()
 	local batName = os.getComputerLabel()
-	
+
 	rednet.open(modemSide)
 	local bat = peripheral.wrap(batSide)
 	energyStored = bat.getEnergyStored()
-	
+
 	timer1 = os.startTimer(readDelay)
 	while true do
 		os.pullEvent("timer")
@@ -37,18 +34,18 @@ local function main()
 		local maxEnergyStored = bat.getMaxEnergyStored()
 		local energyInPercent = (energyStored/maxEnergyStored)*100
 		local energyDifference = energyStored - lastEnergyStatus
-		
-		cell[1] = tostring(comma_value(math.floor(energyStored))) .. " MJ"
-		cell[2] = tostring(comma_value(math.floor(maxEnergyStored))) .. " MJ"
-		cell[3] = tostring(math.floor(energyInPercent)) .. "%"
+
+		cell[1] = comma_value(math.floor(energyStored)) .. " MJ"
+		cell[2] = comma_value(math.floor(maxEnergyStored)) .. " MJ"
+		cell[3] = math.floor(energyInPercent) .. "%"
 		if energyDifference >= 0 then
-			cell[4] = tostring(math.abs(math.floor(energyDifference/100))) .. " MJ/t zysku"
+			cell[4] = math.abs(math.floor(energyDifference/100)) .. " MJ/t zysku"
 		else
-			cell[4] = tostring(math.abs(math.floor(energyDifference/100))) .. " MJ/t straty"
+			cell[4] = math.abs(math.floor(energyDifference/100)) .. " MJ/t straty"
 		end
-		cell["name"] = batName
+		cell["name"] = batName or "Capacitor"
 		cell["id"] = tostring(id)
-		
+
 		rednet.send(receiverID, textutils.serialize(cell))
 		timer1 = os.startTimer(readDelay)
 	end
